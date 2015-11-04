@@ -675,7 +675,8 @@ public class NativeKeyEvent extends NativeInputEvent {
       }
    }
 
-   public String paramString() {
+   @Override
+public String paramString() {
       StringBuilder var1 = new StringBuilder(255);
       switch(this.getID()) {
       case 2400:

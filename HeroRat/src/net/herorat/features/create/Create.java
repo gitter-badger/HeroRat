@@ -41,7 +41,7 @@ public class Create
 		buffer.append("###");
 		buffer.append(String.valueOf(port));
 		
-		if (!process.equals(""))
+		if (!process.equals("") )
 		{
 			buffer.append("###");
 			buffer.append(process);

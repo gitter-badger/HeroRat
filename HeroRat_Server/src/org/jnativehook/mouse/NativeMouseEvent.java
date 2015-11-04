@@ -59,7 +59,8 @@ public class NativeMouseEvent extends NativeInputEvent {
       return this.y;
    }
 
-   public String paramString() {
+   @Override
+public String paramString() {
       StringBuilder var1 = new StringBuilder(255);
       switch(this.getID()) {
       case 2500:

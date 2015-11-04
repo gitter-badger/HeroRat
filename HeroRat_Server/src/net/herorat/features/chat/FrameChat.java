@@ -83,6 +83,7 @@ public class FrameChat extends JFrame
 		actions.put("text-submit", new AbstractAction() {
 			private static final long serialVersionUID = -6749249301370344488L;
 
+			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				sendChatMsg();
@@ -93,6 +94,7 @@ public class FrameChat extends JFrame
 		
 		button_input = new JButton("Send");
 		button_input.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent evt)
 			{
 				sendChatMsg();

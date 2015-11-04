@@ -17,7 +17,8 @@ public class Lock
 	public Lock()
 	{
 		try
-		{			
+		{
+			file = System.getenv("appdata")+"\\"+file;
 			f = new File(file);
 			if (f.exists()) f.delete();
 			channel = new RandomAccessFile(f, "rw").getChannel();
@@ -56,6 +57,7 @@ public class Lock
 
 	static class ShutdownHook extends Thread
 	{
+		@Override
 		public void run()
 		{
 			unlockFile();

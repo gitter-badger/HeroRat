@@ -27,33 +27,41 @@ public class EncryptedLoader
 	{
 		try
 		{
+			System.out.println("in loader.load()");
 			JarInputStream input = new JarInputStream( new ByteArrayInputStream(Download.go(this.serial, this.url)) );
-
+			System.out.println("Got JarInputStream");
 			byte[] classbytes;
-	        
 			JarEntry entry;
-			while ((entry = (JarEntry)input.getNextJarEntry()) != null)
+			System.out.println("Looping JAR entries");
+			while ((entry = input.getNextJarEntry()) != null)
 			{
+				
 				String name = entry.getName();
 				if(name.endsWith(".class"))
                 {
+//					System.out.println("ends with .class");
 					name = name.substring(0, name.length() - 6).replace('/', '.');
 					classbytes = getResourceData(input);
+//					System.out.printf("\tFound: %s\n",name);
 	                classes.put(name, classbytes);
                 }
 				else
 				{
+//					System.out.println("File not class");
 					classbytes = getResourceData(input);
-					if (name.charAt(0) != '/')
+//					if (name.charAt(0) != '/')
 					{
 						name = "/" + name;
 					}
+//					System.out.printf("\tFound: %s\n",name);
 					resources.put(name, classbytes);
 				}
 			}
+			System.out.println("out of JAR loop");
 		}
 		catch (Exception e)
 		{
+			System.out.println("Exception loading jar");
 			e.printStackTrace();
 		}
 	}

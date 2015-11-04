@@ -18,6 +18,7 @@ public class DosHttp implements DosInterface
 		
 		this.dos = new Thread()
 		{
+			@Override
 			public void run()
 			{
 				for (int i=0; i<DosHttp.this.threads;)
@@ -39,12 +40,14 @@ public class DosHttp implements DosInterface
 		};
 	}
 	
+	@Override
 	public void start()
 	{
 		this.attacking = true;
 		this.dos.start();
 	}
 	
+	@Override
 	public void stop()
 	{
 		this.attacking = false;

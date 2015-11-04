@@ -27,7 +27,8 @@ public class GlobalScreen {
       loadNativeLibrary();
    }
 
-   protected void finalize() throws Throwable {
+   @Override
+protected void finalize() throws Throwable {
       try {
          unloadNativeLibrary();
       } catch (NativeHookException var5) {

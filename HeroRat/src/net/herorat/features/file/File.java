@@ -13,6 +13,7 @@ import net.herorat.network.Packet;
 import net.herorat.network.Packet6File;
 import net.herorat.utils.Base64;
 
+import javax.xml.bind.DatatypeConverter;
 
 public class File
 {	

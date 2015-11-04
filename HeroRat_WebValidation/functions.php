@@ -11,9 +11,9 @@ function AESDecrypt($data, $key)
 }
 
 function pad($data, $blocksize)
-{ 
-	$pad = $blocksize - (strlen($data) % $blocksize); 
-	return $data . str_repeat(chr($pad), $pad); 
+{
+	$pad = $blocksize - (strlen($data) % $blocksize);
+	return $data . str_repeat(chr($pad), $pad);
 }
 
 function randomAESKey()
@@ -23,20 +23,26 @@ function randomAESKey()
 	$maxlength = strlen($possible);
 
 	for ($i=0; $i<16; $i++)
-	{ 
+	{
 		$key .= substr($possible, mt_rand(0, $maxlength-1), 1);
 	}
 
 	return $key;
 }
-
-function hex2bin($source) 
-{ 
-	$strlen = strlen($source); 
-	for ($i=0;$i<strlen($source);$i=$i+2) 
-	{ 
-		$bin .= chr(hexdec(substr($source, $i,2))); 
-	} 
-	return $bin; 
+/*
+function hex2bin2($source)
+{
+	$strlen = strlen($source);
+	for ($i=0;$i<strlen($source);$i=$i+2)
+	{
+		$bin .= chr(hexdec(substr($source, $i,2)));
+	}
+	return $bin;
 }
+*/
+function logger($text){
+	$data =  $text . "\n";
+	file_put_contents('FINDME.log', $data);
+}
+
 ?>

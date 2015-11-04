@@ -56,6 +56,7 @@ public class Lock
 
 	static class ShutdownHook extends Thread
 	{
+		@Override
 		public void run()
 		{
 			unlockFile();

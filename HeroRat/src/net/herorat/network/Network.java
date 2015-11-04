@@ -200,6 +200,8 @@ public class Network extends Thread
 					Main.mainWindow.panel_tab9.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
 					Main.mainWindow.panel_tab10.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
 					Main.mainWindow.panel_tab11.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+					Main.mainWindow.panel_tab12.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+					
 				}
 				else
 				{

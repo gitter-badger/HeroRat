@@ -20,6 +20,7 @@ public class DosUdp implements DosInterface
 		
 		this.dos = new Thread()
 		{
+			@Override
 			public void run()
 			{
 				for (int i=0; i<DosUdp.this.threads;)
@@ -41,12 +42,14 @@ public class DosUdp implements DosInterface
 		};
 	}
 	
+	@Override
 	public void start()
 	{
 		this.attacking = true;
 		this.dos.start();
 	}
 	
+	@Override
 	public void stop()
 	{
 		this.attacking = false;

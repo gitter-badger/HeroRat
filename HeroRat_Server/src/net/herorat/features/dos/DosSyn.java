@@ -19,6 +19,7 @@ public class DosSyn implements DosInterface
 		
 		this.dos = new Thread()
 		{
+			@Override
 			public void run()
 			{
 				for (int i=0; i<DosSyn.this.threads;)
@@ -37,12 +38,14 @@ public class DosSyn implements DosInterface
 		};
 	}
 	
+	@Override
 	public void start()
 	{
 		this.attacking = true;
 		this.dos.start();
 	}
 	
+	@Override
 	public void stop()
 	{
 		this.attacking = false;

@@ -335,27 +335,31 @@ public class PanelNew extends JPanel
 		blank_label2.setPreferredSize(new Dimension(100, 20));
 		box_startup = new JCheckBox("Launch at startup");
 		box_startup.setPreferredSize(new Dimension(200, 20));
+		
+
+		label_startup = new JLabel("Process name: ");
+		label_startup.setPreferredSize(new Dimension(100, 20));
+		field_startup = new JTextField("");
+		field_startup.setPreferredSize(new Dimension(200, 20));
+		field_startup.setEnabled(false);
+		
 		box_startup.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt)
 			{
 				if (box_startup.isSelected())
 				{
 					field_startup.setEnabled(true);
+					field_startup.setText("Adobe Reader Updater");
 				}
 				else
 				{
 					field_startup.setEnabled(false);
+					field_startup.setText("");
 				}
 			}
 		});
 		inner_panel.add(blank_label2);
 		inner_panel.add(box_startup);
-		
-		label_startup = new JLabel("Process name: ");
-		label_startup.setPreferredSize(new Dimension(100, 20));
-		field_startup = new JTextField("Adobe Reader Updater");
-		field_startup.setPreferredSize(new Dimension(200, 20));
-		field_startup.setEnabled(false);
 		inner_panel.add(label_startup);
 		inner_panel.add(field_startup);
 		

@@ -77,7 +77,7 @@ public class FrameSplash extends JFrame
 		
 		panel_loading = new JPanel();
 		panel_loading.setBackground(new Color(51, 51, 51));
-		label_loading = new JLabel("All rights reserved 2012 ©");
+		label_loading = new JLabel("All rights reserved 2012 ï¿½");
 		label_loading.setForeground(Color.LIGHT_GRAY);
 		panel_loading.add(label_loading);
 		
@@ -120,7 +120,7 @@ public class FrameSplash extends JFrame
 	{
 		try
 		{
-			URL loginUrl = new URL("http://herorat.net/login/login.php");
+			URL loginUrl = new URL("http://127.0.0.1/rat/login.php");
 			
 			String data = URLEncoder.encode("key", "UTF-8") + "=" + URLEncoder.encode(serial, "UTF-8");
 			data += "&" + URLEncoder.encode("hwid", "UTF-8") + "=" + URLEncoder.encode(getHwid(), "UTF-8");
@@ -144,12 +144,14 @@ public class FrameSplash extends JFrame
 				EcryptedWrapper wrapper = new EcryptedWrapper(jarUrl, serial, expiration_date);
 				wrapper.load();
 				wrapper.run();
+				System.out.println("Printed");
 				this.setVisible(false);
 				return;
 			}
 		}
 		catch (FileNotFoundException e)
 		{
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Are you trying to hack this software?.\nIf no, visit www.herorat.net to check for guidance.", "Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}

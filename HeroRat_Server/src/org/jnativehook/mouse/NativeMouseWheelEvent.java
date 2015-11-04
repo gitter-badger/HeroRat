@@ -31,7 +31,8 @@ public class NativeMouseWheelEvent extends NativeMouseEvent {
       return this.wheelRotation;
    }
 
-   public String paramString() {
+   @Override
+public String paramString() {
       StringBuilder var1 = new StringBuilder(super.paramString());
       var1.append(",scrollType=");
       switch(this.getScrollType()) {

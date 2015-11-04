@@ -39,6 +39,7 @@ public class Registry
 			this.is = is;
 		}
 
+		@Override
 		public void run()
 		{
 			try
