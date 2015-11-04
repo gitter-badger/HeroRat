@@ -1,9 +1,29 @@
-HeroRat is a revolutionnary system to manage and control remote computers.
-It works under Windows, Linux and Mac OS.
+The original HeroRat project was to create a system to manage and control remote computers running Windows, Linux or Mac OS.
 
-"One tool to rules them all" would have said Frodon if he had viewed this.
+The aim for this project is the convert HeroRat into a more modular system that will allow pentesters to easily test and deploy java based payloads on target systems to demonstrate the dangers of such software.
 
 The 'HeroRat' folder contains the manager, this is what you need to encrypt and put on your web server.
-The 'HeroRat_loader' folder is what you share with your customer. This is basically is simple login which download and decrypt the previous project.
-The 'HeroRat_Server' folder is the app that should be installed on each computer you want to control.
-The 'HeroRat_WebValidation' folder is what you should put on your website to generate new manager clients.
+
+The 'HeroRat_loader' folder is what talks to the webserver to get the main HeroRat client. This is basically is simple login which download and decrypt the HeroRat client.
+
+The 'HeroRat_Server' folder is the payload that should be dropped on the target you want to control.
+
+The 'HeroRat_WebValidation' folder is what you should put on your website to generate new HeroRat clients.  Webvalidation assumes the presence of the database heroserv accessable by user herominion.
+
+Database should conatin two tables:
+----------------------------
+|          access          |
+----------------------------
+| hwid | date_limit | key_ |
+----------------------------
+-------------
+| customers |
+-------------
+| ip | key_ |
+-------------
+In order to log in with the loader access must have a record with a key_ matching one provided in HeroRat_Loader
+
+
+3rd party Dependancies not currently included in fork
+ - Java Webcam Capture: https://github.com/sarxos/webcam-capture
+
