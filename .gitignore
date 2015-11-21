@@ -12,6 +12,7 @@ local.properties
 .settings/
 .loadpath
 
+
 # Eclipse Core
 .project
 
@@ -41,3 +42,7 @@ local.properties
 
 # STS (Spring Tool Suite)
 .springBeans
+
+*:Zone.*
+HeroRat/src/lib/blank_server.jar
+*.db

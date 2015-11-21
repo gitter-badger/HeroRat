@@ -99,7 +99,14 @@ public class Crypto
 		byte[] bytes = new byte[input.length() / 2];
 		for (int i = 0; i < bytes.length; i++)
 		{
-			bytes[i] = (byte) Integer.parseInt(input.substring(2 * i, 2 * i + 2), 16);
+			try{
+				bytes[i] = (byte) Integer.parseInt(input.substring(2 * i, 2 * i + 2), 16);
+			}catch(NumberFormatException e){
+				System.out.printf("received %s\n",input);
+				e.printStackTrace();
+				System.exit(1);
+			}
+			
 		}
 		return bytes;
 	}

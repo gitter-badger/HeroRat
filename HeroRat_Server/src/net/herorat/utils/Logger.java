@@ -1,7 +1,7 @@
 package net.herorat.utils;
 
 public class Logger {
-	public static boolean on = false;
+	public static boolean on = true;
 	
 	public static void log(String msg,Object[] args){
 		if(on) System.out.printf(msg,(Object[])args);
