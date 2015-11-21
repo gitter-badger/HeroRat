@@ -8,6 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -143,6 +144,10 @@ public class Network extends Thread
 		this.isConnected = false;
 		try
 		{
+			Iterator<Server> i = servers.values().iterator();
+			while(i.hasNext()){
+				i.next().disconnect();
+			}
 			if (this.serverSocket != null) this.serverSocket.close();
 		}
 		catch (Exception e)
