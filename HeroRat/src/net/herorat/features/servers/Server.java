@@ -48,6 +48,7 @@ import net.herorat.network.Packet7System;
 import net.herorat.network.Packet8Message;
 import net.herorat.network.Packet9Process;
 import net.herorat.utils.Crypto;
+import net.herorat.utils.Logger;
 
 
 public class Server extends Thread
@@ -62,7 +63,7 @@ public class Server extends Thread
 	private String comment;
 	private String password;
 	
-	private Socket socket;
+	public Socket socket;
 	private InputStream input;
 	private OutputStream output;
 	public DataInputStream inputstream;
@@ -76,6 +77,7 @@ public class Server extends Thread
 	
 	public Server(Socket socket)
 	{
+		Logger.log("Connection attempt received\n");
 		try
 		{
 			this.socket = socket;
@@ -89,16 +91,18 @@ public class Server extends Thread
 			buffer_logger = new StringBuffer();
 			this.array_process = new ArrayList<String[]>();
 			
-			this.ip = socket.getInetAddress().getHostAddress();
-		
+			this.ip = this.socket.getInetAddress().getHostAddress();
 			int packet_id = this.inputstream.readInt();
 			int size = this.inputstream.readInt();
+			
 			if (packet_id == 0 && size == 1)
 			{
 				parse( new String(Crypto.decrypt(Crypto.hexToByte(this.inputstream.readUTF()))) );
 			}
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void parse(String data)
@@ -111,6 +115,7 @@ public class Server extends Thread
 		os = params[3];
 		timestamp_start = params[4];
 		password = params[5];
+//		Logger.log("id: %s \nip: %s \nPass: %s\n", this.id,this.ip,this.password);
 	}
 	
 	public void setPing(long delay)
@@ -176,6 +181,7 @@ public class Server extends Thread
 	
 	public void disconnect()
 	{
+		Logger.log("[%s] Connection being closed\n",this.id);
 		for (int i=0; i<Main.mainWindow.panel_tab2.model_servers.getRowCount(); i++)
 		{
 			if (Main.mainWindow.panel_tab2.model_servers.getValueAt(i, 6).toString().equalsIgnoreCase(this.getUid()))
@@ -185,130 +191,134 @@ public class Server extends Thread
 		}
 		
 		int pos = Network.getServerPositionInList(this);
-		if (pos > 0)
-		{
-			Main.mainWindow.panel_tab3.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab4.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab5.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab6.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab7.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab8.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab9.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab10.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab11.combo_select.removeItemAt(pos);
-			Main.mainWindow.panel_tab12.combo_select.removeItemAt(pos);
+		try{
+			if (pos > 0)
+			{
+				Main.mainWindow.panel_tab3.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab4.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab5.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab6.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab7.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab8.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab9.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab10.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab11.combo_select.removeItemAt(pos);
+				Main.mainWindow.panel_tab12.combo_select.removeItemAt(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab3.combo_selected_item = "";
+				Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item));
+				Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab4.combo_selected_item = "";
+				Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item));
+				Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab5.combo_selected_item = "";
+				Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item));
+				Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab6.combo_selected_item = "";
+				Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item));
+				Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab7.combo_selected_item = "";
+				Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item));
+				Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab8.combo_selected_item = "";
+				Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item));
+				Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab9.combo_selected_item = "";
+				Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item));
+				Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab10.combo_selected_item = "";
+				Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item));
+				Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab11.combo_selected_item = "";
+				Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item));
+				Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(pos);
+			}
+			
+			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item)))
+			{
+				Main.mainWindow.panel_tab12.combo_selected_item = "";
+				Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(0);
+			}
+			else
+			{
+				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item));
+				Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(pos);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab3.combo_selected_item = "";
-			Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item));
-			Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab4.combo_selected_item = "";
-			Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item));
-			Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab5.combo_selected_item = "";
-			Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item));
-			Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab6.combo_selected_item = "";
-			Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item));
-			Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab7.combo_selected_item = "";
-			Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item));
-			Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab8.combo_selected_item = "";
-			Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item));
-			Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab9.combo_selected_item = "";
-			Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item));
-			Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab10.combo_selected_item = "";
-			Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item));
-			Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab11.combo_selected_item = "";
-			Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item));
-			Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(pos);
-		}
-		
-		if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item)))
-		{
-			Main.mainWindow.panel_tab12.combo_selected_item = "";
-			Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(0);
-		}
-		else
-		{
-			pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item));
-			Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(pos);
-		}
-
 		try
 		{
 			this.inputstream.close();
@@ -333,6 +343,7 @@ public class Server extends Thread
 			{
 				Packet packet;
 				int packet_id = inputstream.readInt();
+				Logger.log("Packet ID: %d\n",packet_id);				
 				switch (packet_id)
 				{
 					case 1:
@@ -411,6 +422,7 @@ public class Server extends Thread
 			catch (Exception e)
 			{
 				this.disconnect();
+				return;
 			}
 		}
 	}

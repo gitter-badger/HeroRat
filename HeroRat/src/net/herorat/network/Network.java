@@ -18,6 +18,7 @@ import net.herorat.database.DBServers;
 import net.herorat.features.ping.Ping;
 import net.herorat.features.servers.Server;
 import net.herorat.utils.Crypto;
+import net.herorat.utils.Logger;
 
 import java.awt.Image;
 import java.awt.SystemTray;
@@ -33,7 +34,7 @@ public class Network extends Thread
 	public static HashMap<String, Server> servers = new HashMap<String, Server>();
 	
 	private boolean isConnected;
-	private Socket socket;
+//	private Socket socket;
 	private ServerSocket serverSocket;
 	private long start_time;
 	
@@ -71,6 +72,8 @@ public class Network extends Thread
 		
 		try
 		{
+			Logger.log("Opening socket with password: %s\n",this.password);
+			Logger.log("Socket listening on: %s\n",this.port);
 			this.serverSocket = new ServerSocket(this.port);
 			this.isConnected = true;
 		}
@@ -157,12 +160,11 @@ public class Network extends Thread
 		{
 			try
 			{
-				this.socket = this.serverSocket.accept();
-				
-				OutputStream output = this.socket.getOutputStream();
+				Server server = new Server(this.serverSocket.accept());
+				OutputStream output = server.socket.getOutputStream();
 				DataOutputStream outputstream = new DataOutputStream(output);
 
-				Server server = new Server(this.socket);
+				
 				if(server.isAuth(this.password))
 				{
 					servers.put(server.getUid(), server);
@@ -208,7 +210,9 @@ public class Network extends Thread
 					server.disconnect();
 				}
 			}
-			catch (Exception e) {}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

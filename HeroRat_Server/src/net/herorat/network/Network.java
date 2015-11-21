@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import net.herorat.features.blocker.Blocker;
@@ -58,7 +59,11 @@ public class Network extends Thread
 		{
 			try
 			{
-				this.socket = new Socket(this.ip, this.port);
+				InetAddress addr = InetAddress.getByName(this.ip);
+				Logger.log("Hostname %s ", this.ip);
+				Logger.log("resolved to: %s \n",addr.getHostAddress());
+//				this.socket = new Socket(this.ip, this.port);
+				this.socket = new Socket(addr,this.port);
 				this.input = this.socket.getInputStream();
 				this.output = this.socket.getOutputStream();
 				this.inputstream = new DataInputStream(this.input);
@@ -174,7 +179,7 @@ public class Network extends Thread
 	{
 		try
 		{
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		}
 		catch (Exception e) {}
 	}
