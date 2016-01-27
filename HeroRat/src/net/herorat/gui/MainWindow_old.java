@@ -14,7 +14,7 @@ import javax.swing.JTabbedPane;
 
 import net.herorat.utils.Utils;
 
-public class MainWindow extends JFrame
+public class MainWindow_old extends JFrame
 {
 	private static final long serialVersionUID = -547796034497603735L;
 	
@@ -40,20 +40,21 @@ public class MainWindow extends JFrame
 	
 	public JTabbedPane pane_tabs;
 
-	public MainWindow()
+	public MainWindow_old()
 	{
-		if (!this.getClass().getClassLoader().toString().equals("HeroRAT Class Loader"))
-		{
-			System.exit(1);
-		}
-		
-		setTitle("Hero RAT - Remote Administration Tool");
-		setIconImage(new ImageIcon(Utils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("/images/icon.png"))).getImage());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		initComponents();
-		this.setMinimumSize(new Dimension(width+25, height+150));
-		display();
-		centerWindow();
+		new MainWindow_new();
+//		if (!this.getClass().getClassLoader().toString().equals("HeroRAT Class Loader"))
+//		{
+//			System.exit(1);
+//		}
+//		
+//		setTitle("Hero RAT - Remote Administration Tool");
+//		setIconImage(new ImageIcon(Utils.toByteArray(this.getClass().getClassLoader().getResourceAsStream("/images/icon.png"))).getImage());
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		initComponents();
+//		this.setMinimumSize(new Dimension(width+25, height+150));
+//		display();
+//		centerWindow();
 	}
 	
 	private void initComponents()
