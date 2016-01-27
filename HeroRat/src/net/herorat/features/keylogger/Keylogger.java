@@ -30,7 +30,7 @@ public class Keylogger
 				buffer.append(args[i]);
 			}
 			server.buffer_logger.append(buffer.toString());
-			Main.mainWindow.panel_tab11.area_output.setText(server.buffer_logger.toString());
+			Main.mainWindow.PanelKeylogger.area_output.setText(server.buffer_logger.toString());
 		}
 		else if (args.length > 1 && args[0].equals("download"))
 		{
@@ -40,7 +40,7 @@ public class Keylogger
 				buffer.append(args[i]);
 			}
 			server.buffer_logger = buffer;
-			Main.mainWindow.panel_tab11.area_output.setText(server.buffer_logger.toString());
+			Main.mainWindow.PanelKeylogger.area_output.setText(server.buffer_logger.toString());
 		}
 	}
 }

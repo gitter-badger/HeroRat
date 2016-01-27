@@ -107,7 +107,7 @@ public class File
 	
 	public static void handle(Server server, String[] args)
 	{
-		if (!server.equals(Network.findWithCombo(Main.mainWindow.panel_tab9.combo_selected_item))) return;
+		if (!server.equals(Main.mainWindow.PanelFile.getSelectedServer())) return;
 		
 		if (args.length > 1)
 		{
@@ -136,8 +136,8 @@ public class File
 	
 	public static void path(String path)
 	{
-		Main.mainWindow.panel_tab9.current_path = path;
-		Main.mainWindow.panel_tab9.field_path.setText(path);
+		Main.mainWindow.PanelFile.current_path = path;
+		Main.mainWindow.PanelFile.field_path.setText(path);
 	}
 	
 	public static void roots(Server server, String[] args)
@@ -148,15 +148,15 @@ public class File
 			buffer.append(args[i]);
 		}
 		
-		for(int i=Main.mainWindow.panel_tab9.model_roots.getRowCount() - 1; i>=0; i--)
+		for(int i=Main.mainWindow.PanelFile.model_roots.getRowCount() - 1; i>=0; i--)
 		{
-			Main.mainWindow.panel_tab9.model_roots.removeRow(i);
+			Main.mainWindow.PanelFile.model_roots.removeRow(i);
 		}
 		
 		String[] splitted_file = buffer.toString().split("###");
 		for (String element : splitted_file)
 		{
-			Main.mainWindow.panel_tab9.model_roots.addRow( TypeRoot.getRow(element.split("===")) );
+			Main.mainWindow.PanelFile.model_roots.addRow( TypeRoot.getRow(element.split("===")) );
 		}
 	}
 	
@@ -168,28 +168,28 @@ public class File
 			buffer.append(args[i]);
 		}
 		
-		for(int i=Main.mainWindow.panel_tab9.model_files.getRowCount() - 1; i>=0; i--)
+		for(int i=Main.mainWindow.PanelFile.model_files.getRowCount() - 1; i>=0; i--)
 		{
-			Main.mainWindow.panel_tab9.model_files.removeRow(i);
+			Main.mainWindow.PanelFile.model_files.removeRow(i);
 		}
 				
 		String[] splitted_file = buffer.toString().split("###");
-		Main.mainWindow.panel_tab9.model_files.addRow(TypeDir.getRow(new String[] { "." }));
-		Main.mainWindow.panel_tab9.model_files.addRow(TypeDir.getRow(new String[] { ".." }));
+		Main.mainWindow.PanelFile.model_files.addRow(TypeDir.getRow(new String[] { "." }));
+		Main.mainWindow.PanelFile.model_files.addRow(TypeDir.getRow(new String[] { ".." }));
 		// Add the new ones
 		for (String element : splitted_file)
 		{
 			if (element.startsWith("DIR_"))
 			{
-				Main.mainWindow.panel_tab9.model_files.addRow(TypeDir.getRow(element.substring(4).split("===")));
+				Main.mainWindow.PanelFile.model_files.addRow(TypeDir.getRow(element.substring(4).split("===")));
 			}
 			else if (element.startsWith("FILE_"))
 			{
-				Main.mainWindow.panel_tab9.model_files.addRow(TypeFile.getRow(element.substring(5).split("===")));
+				Main.mainWindow.PanelFile.model_files.addRow(TypeFile.getRow(element.substring(5).split("===")));
 			}
 			else
 			{
-				Main.mainWindow.panel_tab9.model_files.addRow(TypeUnknown.getRow(element.split("===")));
+				Main.mainWindow.PanelFile.model_files.addRow(TypeUnknown.getRow(element.split("===")));
 			}
 		}
 	}

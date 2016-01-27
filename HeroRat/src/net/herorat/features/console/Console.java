@@ -17,7 +17,7 @@ public class Console
 
 	public static void handle(Server server, String[] args)
 	{
-		if (!server.equals(Network.findWithCombo(Main.mainWindow.panel_tab5.combo_selected_item))) return;
+		if (!server.equals(Main.mainWindow.PanelConsole.getCurrentServer())) return;
 		
 		if (args.length > 0)
 		{
@@ -28,7 +28,7 @@ public class Console
 			}
 			
 			server.buffer_console.append(buffer.toString() + "\n");
-			Main.mainWindow.panel_tab5.area_console.setText(server.buffer_console.toString());
+			Main.mainWindow.PanelConsole.area_console.setText(server.buffer_console.toString());
 		}
 	}
 	

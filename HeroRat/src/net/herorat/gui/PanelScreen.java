@@ -43,12 +43,15 @@ public class PanelScreen extends JPanel
 	private static final long serialVersionUID = -4833291511811911810L;
 
 	private JLabel label_select;
-	public JComboBox<String> combo_select;
-	public String combo_selected_item = "";
-	
+	public JButton button_start;
+//	public String combo_selected_item = "";
+	private boolean running = false;
+
 	public JLabel label_screen;
 	private JScrollPane scroll_screen;
-	
+
+    private Server server;
+
 	private JLabel label_zoom;
 	public JSpinner spinner_zoom;
 	private JCheckBox box_remote;
@@ -76,42 +79,62 @@ public class PanelScreen extends JPanel
 	
 	private void createSelect()
 	{
-		label_select = new JLabel("Select an user: ");
-		combo_select = new JComboBox<String>( Network.getServerList(false) );
-		
+		label_select = new JLabel("Select a user from the tree list.");
+//		combo_select = new JComboBox<String>( Network.getServerList(false) );
+        button_start = new JButton("Start service");
+        button_start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(running){
+                    stopService();
+                }else{
+                    startService();
+                }
+            }
+        });
+
+
 		JPanel top_panel = new JPanel();
 		top_panel.setLayout(new BorderLayout(5, 0));
 		top_panel.setBorder(BorderFactory.createEmptyBorder(0, 2, 5, 2));
 		top_panel.add(label_select, BorderLayout.LINE_START);
-		top_panel.add(combo_select);
+        top_panel.add(button_start,BorderLayout.LINE_END);
+//		top_panel.add(combo_select);
 		add(top_panel, BorderLayout.NORTH);
 		
-		combo_select.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				String selection = String.valueOf(combo_select.getSelectedItem());
-				if (combo_select.getSelectedIndex() != 0 && !selection.equals(combo_selected_item))
-				{
-					if (frameRemote != null)
-					{
-						frameRemote.dispose();
-						frameRemote = null;
-					}
-					
-					combo_selected_item = selection;
-					Server server = Network.findWithCombo(combo_selected_item);
-					if (server != null) Screen.send(server, Integer.valueOf(spinner_zoom.getValue().toString()));
-				}
-				else if (combo_select.getSelectedIndex() == 0)
-				{
-					combo_selected_item = "";
-					label_screen.setIcon(null);
-				}
-			}
-		});
+
 	}
-	
+
+    public Server getSelectedServer(){
+        return server;
+    }
+
+	private void startService(){
+        server = Main.mainWindow.ServerStatusTree.getSelectedServer();
+        if(server !=null){
+            running = true;
+            button_start.setText("Stop service");
+            label_select.setText("Talking to: "+server.getServerName()+"@"+server.getIp());
+            if (frameRemote != null)
+            {
+                frameRemote.dispose();
+                frameRemote = null;
+            }
+
+            if (server != null) Screen.send(server, Integer.valueOf(spinner_zoom.getValue().toString()));
+        }else{
+            stopService();
+        }
+    }
+
+    private void stopService(){
+        server = null;
+        running = false;
+        label_select.setText("Select a user from the tree list.");
+        button_start.setText("Start service");
+        label_screen.setIcon(null);
+    }
+
 	private void createScreen()
 	{
 		label_screen = new JLabel();
@@ -158,7 +181,6 @@ public class PanelScreen extends JPanel
 			{
 				if (box_remote.isSelected())
 				{
-					Server server = Network.findWithCombo(combo_selected_item);
 					if (server != null)
 					{
 						frameRemote = new FrameRemote(server);
@@ -167,7 +189,6 @@ public class PanelScreen extends JPanel
 						scroll_screen.getViewport().addMouseListener(new MouseAdapter() {
 							public void mousePressed(MouseEvent e)
 							{
-								Server server = Network.findWithCombo(combo_selected_item);
 								Point point = e.getPoint();
 								Remote.sendMouse(server, e.getButton(), point.x, point.y);
 							}
@@ -195,7 +216,7 @@ public class PanelScreen extends JPanel
 		button_save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				ImageIcon img = (ImageIcon) Main.mainWindow.panel_tab3.label_screen.getIcon();
+				ImageIcon img = (ImageIcon) Main.mainWindow.PanelScreen.label_screen.getIcon();
 				if (img == null) return;
 				
 				Image image = img.getImage();

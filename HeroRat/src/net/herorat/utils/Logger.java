@@ -6,6 +6,7 @@ public class Logger {
 	public static void log(String msg,Object[] args){
 		if(on) System.out.printf(msg,(Object[])args);
 	}
+	
 
 	public static void log(String msg, Object args) {
 		if (on) System.out.printf(msg,args);

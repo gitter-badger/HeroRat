@@ -71,11 +71,12 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(7);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab8.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab8.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab8.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(7);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//              change to include selection from treelist
+//              Main.mainWindow.PanelChat.combo_select.setSelectedIndex(pos);
+//              if (pos != 0) Main.mainWindow.PanelChat.combo_selected_item = String.valueOf(Main.mainWindow.PanelChat.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -86,11 +87,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(4);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab5.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab5.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab5.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(4);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelConsole.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelConsole.combo_selected_item = String.valueOf(Main.mainWindow.PanelConsole.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -101,11 +102,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(8);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab9.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab9.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab9.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(8);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelFile.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelFile.combo_selected_item = String.valueOf(Main.mainWindow.PanelFile.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -116,11 +117,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(6);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab7.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab7.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab7.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(6);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelProcess.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelProcess.combo_selected_item = String.valueOf(Main.mainWindow.PanelProcess.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -131,11 +132,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(2);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab3.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab3.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab3.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(2);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelScreen.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelScreen.combo_selected_item = String.valueOf(Main.mainWindow.PanelScreen.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -158,11 +159,7 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(9);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab10.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab10.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab10.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(9);
 			}
 		});
 		menu_dropdown.add(item);
@@ -185,11 +182,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(10);
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab11.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab11.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab11.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(10);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelKeylogger.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelKeylogger.combo_selected_item = String.valueOf(Main.mainWindow.PanelKeylogger.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -261,12 +258,11 @@ public class PanelServers extends JPanel
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				Main.mainWindow.pane_tabs.setSelectedIndex(3);
-				// TODO Set selection
-				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
-				int pos = Network.getServerPositionInList(server);
-				Main.mainWindow.panel_tab4.combo_select.setSelectedIndex(pos);
-				if (pos != 0) Main.mainWindow.panel_tab4.combo_selected_item = String.valueOf(Main.mainWindow.panel_tab4.combo_select.getSelectedItem());
+				Main.mainWindow.controller_tabbed_pane.setSelectedIndex(3);
+//				Server server = Network.servers.get(table_servers.getValueAt(table_servers.getSelectedRow(), 6).toString());
+//				int pos = Network.getServerPositionInList(server);
+//				Main.mainWindow.PanelSystem.combo_select.setSelectedIndex(pos);
+//				if (pos != 0) Main.mainWindow.PanelSystem.combo_selected_item = String.valueOf(Main.mainWindow.PanelSystem.combo_select.getSelectedItem());
 			}
 		});
 		menu_dropdown.add(item);
@@ -301,7 +297,9 @@ public class PanelServers extends JPanel
 		scroll_servers.setViewportView(table_servers);
 		add(scroll_servers);
 		
-		for (int i=0; i<table_servers.getColumnModel().getColumnCount(); i++) table_servers.getColumnModel().getColumn(i).setCellRenderer(new TableRendererServers());
+		for (int i=0; i<table_servers.getColumnModel().getColumnCount(); i++)
+			table_servers.getColumnModel().getColumn(i).setCellRenderer(new TableRendererServers());
+
 		JLabel cell = ((JLabel)(table_servers.getColumnModel().getColumn(0).getCellRenderer()));
 		cell.setHorizontalAlignment(JLabel.CENTER);
 		

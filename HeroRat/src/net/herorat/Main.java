@@ -15,7 +15,7 @@ public class Main
 	
 	public static MainWindow mainWindow = null;
 	public static Network network = null;
-	
+
 	public static void main(String[] args) throws IOException
 	{
 		if (args.length == 1) expiration_date = args[0] + "000";

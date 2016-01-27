@@ -23,7 +23,7 @@ public class Process
 	
 	public static void handle(Server server, String[] args)
 	{
-		if (!server.equals(Network.findWithCombo(Main.mainWindow.panel_tab7.combo_selected_item))) return;
+		if (!server.equals(Main.mainWindow.PanelProcess.getActiveServer())) return;
 		
 		StringBuffer buffer = new StringBuffer();
 		for (String arg : args)
@@ -35,7 +35,7 @@ public class Process
 		for (String raw : splitted_raw)
 		{
 			server.array_process.add(raw.split(";"));
-			Main.mainWindow.panel_tab7.model_process.addRow(raw.split(";"));
+			Main.mainWindow.PanelProcess.model_process.addRow(raw.split(";"));
 		}
 	}
 }

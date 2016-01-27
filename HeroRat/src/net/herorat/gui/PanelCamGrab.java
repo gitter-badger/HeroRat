@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -29,6 +30,7 @@ import net.herorat.Main;
 import net.herorat.features.camgrab.CamGrab;
 import net.herorat.features.servers.Server;
 import net.herorat.network.Network;
+import net.herorat.utils.Logger;
 
 
 public class PanelCamGrab extends JPanel
@@ -36,8 +38,9 @@ public class PanelCamGrab extends JPanel
 	private static final long serialVersionUID = -4833291511811911810L;
 
 	private JLabel label_select;
-	public JComboBox<String> combo_select;
-	public String combo_selected_item = "";
+	private JButton button_start;
+	private boolean running;
+	private Server server;
 	
 	public JLabel label_screen;
 	private JScrollPane scroll_screen;
@@ -68,42 +71,64 @@ public class PanelCamGrab extends JPanel
 	
 	private void createSelect()
 	{
-		label_select = new JLabel("Select an user: ");
-		combo_select = new JComboBox<String>( Network.getServerList(false) );
+		label_select = new JLabel("Select a user from the tree list.");
+		button_start = new JButton("Start service");
+		button_start.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(running){
+					stopService();
+				}else{
+					startService();
+				}
+			}
+		});
 		
 		JPanel top_panel = new JPanel();
 		top_panel.setLayout(new BorderLayout(5, 0));
 		top_panel.setBorder(BorderFactory.createEmptyBorder(0, 2, 5, 2));
 		top_panel.add(label_select, BorderLayout.LINE_START);
-		top_panel.add(combo_select);
+		top_panel.add(button_start,BorderLayout.LINE_END);
 		add(top_panel, BorderLayout.NORTH);
-		
-		combo_select.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				String selection = String.valueOf(combo_select.getSelectedItem());
-				if (combo_select.getSelectedIndex() != 0 && !selection.equals(combo_selected_item))
-				{
-					if (frameRemote != null)
-					{
-						frameRemote.dispose();
-						frameRemote = null;
-					}
-					
-					combo_selected_item = selection;
-					Server server = Network.findWithCombo(combo_selected_item);
-					if (server != null) CamGrab.send(server, Integer.valueOf(spinner_zoom.getValue().toString()));
-				}
-				else if (combo_select.getSelectedIndex() == 0)
-				{
-					combo_selected_item = "";
-					label_screen.setIcon(null);
-				}
-			}
-		});
+
 	}
-	
+
+	public Server getCurrentServer(){return server;};
+
+	private void startService(){
+		if (frameRemote != null)
+		{
+			frameRemote.dispose();
+			frameRemote = null;
+		}
+
+		server = Main.mainWindow.ServerStatusTree.getSelectedServer();
+		if(server != null){
+			running = true;
+			button_start.setText("Stop service");
+			label_select.setText("Talking to: "+server.getServerName()+"@"+server.getIp());
+			if(server.hasCam())
+			{
+				Logger.log("Cam is: %s\n",server.hasCam());
+				CamGrab.send(server, Integer.valueOf(spinner_zoom.getValue().toString()));
+			}else{
+				stopService();
+				JOptionPane.showMessageDialog(null, "This device doesn't support this feature. \nThis could be because they don't have a camera \nOr the camera device is not supported.");
+			}
+		}else{
+			stopService();
+		}
+
+	}
+
+	private void stopService(){
+		server = null;
+		running = false;
+		button_start.setText("Start service");
+		label_select.setText("Select a user from the tree list.");
+		label_screen.setIcon(null);
+	}
+
 	private void createScreen()
 	{
 		label_screen = new JLabel();
@@ -149,7 +174,7 @@ public class PanelCamGrab extends JPanel
 		button_save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt)
 			{
-				ImageIcon img = (ImageIcon) Main.mainWindow.panel_tab12.label_screen.getIcon();
+				ImageIcon img = (ImageIcon) Main.mainWindow.PanelCamGrab.label_screen.getIcon();
 				if (img == null) return;
 				
 				Image image = img.getImage();

@@ -17,7 +17,7 @@ public class System
 
 	public static void handle(Server server, String[] args)
 	{
-		if (!server.equals(Network.findWithCombo(Main.mainWindow.panel_tab4.combo_selected_item))) return;
+		if (!server.equals(Main.mainWindow.PanelSystem.getCurrentServer())) return;
 		
 		StringBuffer buffer = new StringBuffer();
 		for (String arg : args)
@@ -25,6 +25,6 @@ public class System
 			buffer.append(arg);
 		}
 		
-		Main.mainWindow.panel_tab4.area_output.setText(buffer.toString());
+		Main.mainWindow.PanelSystem.area_output.setText(buffer.toString());
 	}
 }

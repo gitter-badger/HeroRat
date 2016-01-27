@@ -79,7 +79,7 @@ public class Create
 			output.close();
 			input.close();
 
-			JOptionPane.showMessageDialog(Main.mainWindow.panel_tab1, "Server was successfully created");
+			JOptionPane.showMessageDialog(Main.mainWindow.serverStatusPanel, "Server was successfully created");
 		}
 		catch (Exception e)
 		{
