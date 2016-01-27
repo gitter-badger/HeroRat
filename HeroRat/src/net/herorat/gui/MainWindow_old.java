@@ -42,7 +42,7 @@ public class MainWindow_old extends JFrame
 
 	public MainWindow_old()
 	{
-		new MainWindow_new();
+		new MainWindow();
 //		if (!this.getClass().getClassLoader().toString().equals("HeroRAT Class Loader"))
 //		{
 //			System.exit(1);
