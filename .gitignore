@@ -12,7 +12,6 @@ local.properties
 .settings/
 .loadpath
 
-
 # Eclipse Core
 .project
 
@@ -46,3 +45,8 @@ local.properties
 *:Zone.*
 HeroRat/src/lib/blank_server.jar
 *.db
+*.iml
+*.eml
+.idea
+/config/
+process.lock
