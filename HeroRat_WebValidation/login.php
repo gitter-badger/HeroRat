@@ -11,6 +11,7 @@ foreach (scandir('./tmp/') as $item)
 {
 	if ($item == '.' || $item == '..' || $item == 'index.php' || $item == '6b280bf9f5271c753f334e237521eb0f.bin') continue;
 	$max_time = filemtime('./tmp/'. $item) + 60 * 5;
+	// if the file isn't current delete it
 	if (time() > $max_time)
 	{
 		unlink('./tmp/'. $item);
@@ -21,7 +22,9 @@ foreach (scandir('./tmp/') as $item)
 
 if ( (isset($_POST['key'])) && (!empty($_POST['key'])) && (isset($_POST['hwid'])) && (!empty($_POST['hwid'])) )
 {
+	// key requested from user
 	$key = htmlspecialchars($_POST['key']); // 1234-5678-9012-3456
+	// key built from the current computer
 	$hwid = htmlspecialchars($_POST['hwid']);
 	logger('In main');
 	// Check if the key is valid and if the launcher hwid is valid
