@@ -1,8 +1,7 @@
 .ftpconfig
 *.pydevproject
 .metadata
-.gradle
-bin/
+
 tmp/
 *.tmp
 *.bak
@@ -43,10 +42,21 @@ local.properties
 .springBeans
 
 *:Zone.*
-HeroRat/src/lib/blank_server.jar
 *.db
+
+# Intellij files
 *.iml
 *.eml
 .idea
+
+# misc project binaries and artifacts
+HeroRat/src/lib/blank_server.jar
 /config/
 process.lock
+.gradle
+HeroRat/bin/
+HeroRat/build
+HeroRat_loader/bin
+HeroRat_loader/build
+HeroRat_Server/bin
+HeroRat_Server/build
