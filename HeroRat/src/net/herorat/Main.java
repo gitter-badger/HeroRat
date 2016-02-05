@@ -8,6 +8,7 @@ import net.herorat.gui.FrameCluf;
 
 import net.herorat.gui.MainWindow;
 import net.herorat.network.Network;
+import net.herorat.utils.Logger;
 
 public class Main
 {	
@@ -31,7 +32,7 @@ public class Main
 			System.exit(0);
 		}
 		catch (Exception e) {}
-		
+
 		new FrameCluf();
 	}
 }
