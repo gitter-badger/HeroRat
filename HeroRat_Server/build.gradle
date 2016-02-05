@@ -12,6 +12,10 @@ description = "Builds the HeroRat server to be placed on clients machines"
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
+// set the java path to jdk 7 so server is supported in more environments
+compileJava.options.fork = true
+compileJava.options.forkOptions.executable = "C:\\Program Files\\Java\\jdk1.7.0_79\\bin\\javac.exe"
+
 sourceSets{
     main{
         java {

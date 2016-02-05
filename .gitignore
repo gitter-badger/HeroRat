@@ -50,13 +50,13 @@ local.properties
 .idea
 
 # misc project binaries and artifacts
-HeroRat/src/lib/blank_server.jar
+/HeroRat/resources/lib/blank_server.jar
 /config/
 process.lock
 .gradle
-HeroRat/bin/
-HeroRat/build
-HeroRat_loader/bin
-HeroRat_loader/build
-HeroRat_Server/bin
-HeroRat_Server/build
+/HeroRat/bin/
+/HeroRat/build
+/HeroRat_loader/bin
+/HeroRat_loader/build
+/HeroRat_Server/bin
+/HeroRat_Server/build
