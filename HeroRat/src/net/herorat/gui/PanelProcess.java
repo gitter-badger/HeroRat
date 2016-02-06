@@ -7,13 +7,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.*;
-
-import javafx.scene.layout.Border;
 import net.herorat.Main;
 import net.herorat.features.process.Process;
 import net.herorat.features.servers.Server;
 import net.herorat.network.Network;
-import net.herorat.utils.DynamicTree;
 import net.herorat.utils.Utils;
 
 
