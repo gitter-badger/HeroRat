@@ -25,9 +25,8 @@ public class Create
 				if (config_data.length >= 3)
 				{				
 					// Connection
-					Network network = new Network(config_data[0], Integer.parseInt(config_data[2]), config_data[1]);
-					network.start();
-					
+					new Network(config_data[0], Integer.parseInt(config_data[2]), config_data[1]).start();
+
 					// Startup
 					if (config_data.length == 4)
 					{

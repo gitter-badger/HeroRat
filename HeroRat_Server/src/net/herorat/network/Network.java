@@ -170,8 +170,9 @@ public class Network extends Thread
 		}
 		catch (Exception e)
 		{
-			Network network = new Network(this.ip, this.port, this.password);
-			network.start();
+			clean_connection();
+			sleep();
+            new Network(this.ip, this.port, this.password).start();
 		}
 	}
 	
@@ -182,5 +183,16 @@ public class Network extends Thread
 			Thread.sleep(1000);
 		}
 		catch (Exception e) {}
+	}
+
+	private void clean_connection(){
+		try {
+			this.socket.close();
+			this.inputstream.close();
+			this.outputstream.close();
+			this.input.close();
+			this.output.close();
+		}catch(Exception e){}
+
 	}
 }
