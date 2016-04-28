@@ -187,6 +187,7 @@ public class Network extends Thread
 
 	private void clean_connection(){
 		try {
+            this.isConnected = false;
 			this.socket.close();
 			this.inputstream.close();
 			this.outputstream.close();
